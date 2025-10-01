@@ -5,39 +5,48 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from locators_module.Locators import Locators  # Подключаем локаторы
 
-# Вспомогательная функция клика по разделу
-def click_section(driver, locator):
-    wait = WebDriverWait(driver, 10)
-    wait.until(EC.element_to_be_clickable(locator)).click()
+class TestConstructor:
 
-# Вспомогательная функция проверки отображения раздела
-def is_section_active(driver, locator):
-    wait = WebDriverWait(driver, 10)
-    try:
-        elem = wait.until(EC.presence_of_element_located(locator))
-        return elem.is_displayed()
-    except TimeoutException:
-        return False
+    def test_navigate_to_buns_section(self, driver):
+        driver.get("https://stellarburgers.nomoreparties.site/")
+        wait = WebDriverWait(driver, 10)
+    
+        # Кликаем по разделу Соусы
+        wait.until(EC.element_to_be_clickable(Locators.SAUCES_SECTION)).click()
+        # Кликаем по разделу Булки
+        wait.until(EC.element_to_be_clickable(Locators.BUNS_SECTION)).click()
 
-# Общий хук для открытия страницы один раз для всех тестов
-@pytest.fixture(autouse=True)
-def setup(driver):
-    driver.get("https://stellarburgers.nomoreparties.site/")
+        # Проверяем, что раздел Булки отображается
+        try:
+            elem = wait.until(EC.presence_of_element_located(Locators.BUNS_TAB_FULL))
+            assert elem.is_displayed(), "Раздел Булки не отображается"
+        except TimeoutException:
+            assert False, "Элемент раздела Булки не найден или не видим"
 
-# Проверяем переход в раздел Булки
-def test_navigate_to_buns_section(driver):
-    # Сначала кликаем по разделу Соусы
-    click_section(driver, Locators.SAUCES_SECTION)
-    # Затем кликаем по разделу Булки
-    click_section(driver, Locators.BUNS_SECTION)
-    assert is_section_active(driver, Locators.BUNS_SECTION)
+    def test_navigate_to_sauces_section(self, driver):
+        driver.get("https://stellarburgers.nomoreparties.site/")
+        wait = WebDriverWait(driver, 10)
 
-# Проверяем переход в раздел Соусы
-def test_navigate_to_sauces_section(driver):
-    click_section(driver, Locators.SAUCES_SECTION)
-    assert is_section_active(driver, Locators.SAUCES_SECTION)
+        # Кликаем по разделу Соусы
+        wait.until(EC.element_to_be_clickable(Locators.SAUCES_SECTION)).click()
 
-# Проверяем переход в раздел Начинки
-def test_navigate_to_fillings_section(driver):
-    click_section(driver, Locators.FILLINGS_SECTION)
-    assert is_section_active(driver, Locators.FILLINGS_SECTION)
+        # Проверяем, что раздел Соусы отображается
+        try:
+            elem = wait.until(EC.presence_of_element_located(Locators.SOUS_TAB_FULL))
+            assert elem.is_displayed(), "Раздел Соусы не отображается"
+        except TimeoutException:
+            assert False, "Элемент раздела Соусы не найден или не видим"
+
+    def test_navigate_to_fillings_section(self, driver):
+        driver.get("https://stellarburgers.nomoreparties.site/")
+        wait = WebDriverWait(driver, 10)
+
+        # Кликаем по разделу Начинки
+        wait.until(EC.element_to_be_clickable(Locators.FILLINGS_SECTION)).click()
+
+        # Проверяем, что раздел Начинки отображается
+        try:
+            elem = wait.until(EC.presence_of_element_located(Locators.FILLINGS_TAB_FULL))
+            assert elem.is_displayed(), "Раздел Начинки не отображается"
+        except TimeoutException:
+            assert False, "Элемент раздела Начинки не найден или не видим"

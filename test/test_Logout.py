@@ -1,44 +1,35 @@
 # Проверка выхода из аккаунта кликом по кнопке «Выйти» в личном кабинете Logout.py
 
 
-import pytest
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.common.exceptions import TimeoutException
 from locators_module.Locators import Locators
+from helpers import perform_login, check_login_header
 
-def test_login_and_logout(driver, login):
-    wait = WebDriverWait(driver, 10)
-    driver.get("https://stellarburgers.nomoreparties.site/")
+class TestLogout: 
 
-    # Нажать кнопку "Войти в аккаунт" 
-    
-    wait.until(EC.element_to_be_clickable(Locators.LOGIN_BUTTON)).click()
+    def test_login_and_logout(self, driver):
+        wait = WebDriverWait(driver, 10)
+        driver.get("https://stellarburgers.nomoreparties.site/")
 
-    # Выполнить вход через фикстуру
+        # Нажать кнопку "Войти в аккаунт" 
+        wait.until(EC.element_to_be_clickable(Locators.LOGIN_BUTTON)).click()
 
-    login()
+        # Выполнить вход
+        perform_login(driver)
 
-    # Нажать на ссылку "Личный Кабинет"
-    
-    wait.until(EC.element_to_be_clickable(Locators.PERSONAL_ACCOUNT_LINK)).click()
+        # Перейти в личный кабинет
+        wait.until(EC.element_to_be_clickable(Locators.PERSONAL_ACCOUNT_LINK)).click()
 
-    # Нажать на кнопку "Выйти"
-    wait.until(EC.element_to_be_clickable(Locators.LOGOUT_BUTTON)).click()
+        # Выйти из аккаунта
+        wait.until(EC.element_to_be_clickable(Locators.LOGOUT_BUTTON)).click()
 
-    # Проверить наличие заголовка "Вход" после выхода
-    result = check_login_header(wait)
-    print("Logout test result:", "PASSED" if result else "FAILED")
-    assert result
+        # Проверить наличие заголовка "Вход" после выхода
+        result = check_login_header(wait, Locators.LOGIN_HEADER)
 
-def check_login_header(wait):
-    try:
-        element = wait.until(EC.presence_of_element_located(Locators.LOGIN_HEADER))
-        if element.text == "Вход":
-            return True
+        if result:
+            print("Выход выполнен успешно. Заголовок 'Вход' отображается.")
         else:
-            print(f"Текст заголовка не совпадает: ожидается 'Вход', найдено '{element.text}'")
-            return False
-    except TimeoutException:
-        print("Элемент заголовка входа не найден в течение времени ожидания")
-        return False
+            print("Проверка не прошла. Заголовок 'Вход' не найден.")
+        assert result
+

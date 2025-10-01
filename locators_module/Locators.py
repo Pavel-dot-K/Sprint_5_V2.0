@@ -41,14 +41,57 @@ class Locators:
 
     LOGIN_LINK = (By.XPATH, "//a[text()='Войти']") # Текст-ссылка Войти в форме регистрации
 
-# Локатор для Булки
+    # Локатор для Булки
 
     BUNS_SECTION = (By.XPATH, "//div[contains(@class, 'tab_tab__1SPyG')]//span[text()='Булки']")
 
-# Локатор для Соусы
+    # Локатор для Соусы
 
     SAUCES_SECTION = (By.XPATH, "//div[contains(@class, 'tab_tab__1SPyG')]//span[text()='Соусы']")
 
-# Локатор для Начинки
+    # Локатор для Начинки
 
     FILLINGS_SECTION = (By.XPATH, "//div[contains(@class, 'tab_tab__1SPyG')]//span[text()='Начинки']")
+
+    # Локатор нажатой кнопки разела Соусы
+
+    SOUS_TAB_FULL = (By.XPATH, '''
+    //div[contains(@class, 'tab_tab__1SPyG') and 
+        contains(@class, 'tab_tab_type_current__2BEPc') and
+        contains(@class, 'pt-4') and 
+        contains(@class, 'pr-10') and 
+        contains(@class, 'pb-4') and 
+        contains(@class, 'pl-10') and 
+        contains(@class, 'noselect') 
+        and span[text()="Соусы"]
+    ]
+''')
+    
+    # Локатор нажатой кнопки разела Булки
+
+    BUNS_TAB_FULL = (By.XPATH, '''
+    //div[
+        contains(@class, 'tab_tab__1SPyG') and 
+        contains(@class, 'tab_tab_type_current__2BEPc') and
+        contains(@class, 'pt-4') and 
+        contains(@class, 'pr-10') and 
+        contains(@class, 'pb-4') and 
+        contains(@class, 'pl-10') and 
+        contains(@class, 'noselect')
+        and span[text()="Булки"]
+    ]
+''')
+
+    # Локатор нажатой кнопки разела Начинки
+
+    FILLINGS_TAB_FULL = (By.XPATH, '''
+    //div[contains(@class, 'tab_tab__1SPyG') and 
+        contains(@class, 'tab_tab_type_current__2BEPc') and
+        contains(@class, 'pt-4') and 
+        contains(@class, 'pr-10') and 
+        contains(@class, 'pb-4') and 
+        contains(@class, 'pl-10') and 
+        contains(@class, 'noselect') 
+        and span[text()="Начинки"]
+    ]
+''')
